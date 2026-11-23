@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Estuda Enzo · Sistema de estudos</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📚</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="topo">
+    <div class="marca">
+      <span class="marca-icone">📚</span>
+      <div>
+        <strong>Estuda Enzo</strong>
+        <small>Coleção SFB · Farias Brito · Santillana Educação</small>
+      </div>
+    </div>
+    <nav class="abas" id="abas">
+      <button data-tela="inicio" class="ativa">🏠 Início</button>
+      <button data-tela="estudar">🧠 Estudar</button>
+      <button data-tela="estante">📖 Estante</button>
+      <button data-tela="tutor">💬 Tutor</button>
+      <button data-tela="historico">⭐ Histórico</button>
+      <button data-tela="config" title="Configurações">⚙️</button>
+    </nav>
+  </header>
+
+  <main>
+    <!-- ================= INÍCIO ================= -->
+    <section class="tela ativa" id="tela-inicio">
+      <div class="hero">
+        <div>
+          <h1>Oi, <span id="nome-aluno">Enzo</span>! O que vamos estudar hoje?</h1>
+          <p>Diga o assunto que o professor está dando e eu monto um <b>resumo</b>, um <b>simulado com 5 questões</b>,
+            <b>dicas para a prova</b> e <b>videoaulas</b> — tudo no jeito da coleção <b>SFB (Farias Brito / Santillana)</b>.</p>
+          <form class="busca-rapida" id="form-rapido">
+            <input id="rapido-assunto" placeholder="Ex.: Revolução Industrial, Segundo Reinado, produtos notáveis…" autocomplete="off">
+            <button class="btn grande">Estudar ➜</button>
+          </form>
+        </div>
+        <div class="hero-ano">
+          <label for="sel-ano">Meu ano</label>
+          <select id="sel-ano">
+            <option value="6">6º ano</option>
+            <option value="7">7º ano</option>
+            <option value="8" selected>8º ano</option>
+            <option value="9">9º ano</option>
+          </select>
+          <small>Ensino Fundamental · Anos Finais</small>
+        </div>
+      </div>
+
+      <h2 class="titulo-secao">Assuntos do seu ano</h2>
+      <p class="sub">Clique num assunto para estudar. Os marcados com ✅ funcionam até sem internet/chave.</p>
+      <div id="lista-curriculo" class="curriculo"></div>
+    </section>
+
+    <!-- ================= ESTUDAR ================= -->
+    <section class="tela" id="tela-estudar">
+      <form id="form-estudar" class="cartao form-estudar">
+        <div class="linha">
+          <label>Matéria
+            <select id="est-materia"></select>
+          </label>
+          <label>Volume do livro
+            <select id="est-volume">
+              <option value="">Não sei</option>
+              <option value="1">Volume 1</option>
+              <option value="2">Volume 2</option>
+              <option value="3">Volume 3</option>
+              <option value="4">Volume 4</option>
+            </select>
+          </label>
+        </div>
+        <label>Qual é o assunto?
+          <input id="est-assunto" placeholder="Ex.: Revolução Industrial" required autocomplete="off">
+        </label>
+        <label>Detalhes (opcional)
+          <input id="est-detalhes" placeholder="Ex.: o professor focou nas condições dos operários" autocomplete="off">
+        </label>
+        <div class="anexos">
+          <div class="anexos-topo">
+            <span>📷 Páginas do livro (opcional) — o resumo fica baseado no SEU livro</span>
+            <label class="btn secundario pequeno">Adicionar fotos
+              <input type="file" id="est-fotos" accept="image/*" multiple hidden>
+            </label>
+          </div>
+          <div id="est-miniaturas" class="miniaturas"></div>
+          <small class="dica">Dica: na <b>Estante</b>, abra o livro e clique em “📌 Usar esta página no estudo”.</small>
+        </div>
+        <button class="btn grande" id="btn-gerar">✨ Gerar meu material de estudo</button>
+      </form>
+
+      <div id="resultado"></div>
+    </section>
+
+    <!-- ================= ESTANTE ================= -->
+    <section class="tela" id="tela-estante">
+      <div class="estante-topo">
+        <div>
+          <h2 class="titulo-secao">Minha estante · <span id="estante-ano">8º ano</span></h2>
+          <p class="sub">Coleção <b>Sistema Farias Brito (SFB)</b> · Santillana Educação. Clique num livro para ler.
+            Para ler aqui, adicione o PDF ou fotos das páginas do seu livro (fica salvo só neste aparelho).</p>
+        </div>
+        <button class="btn secundario" id="btn-novo-livro">➕ Adicionar outro livro</button>
+      </div>
+      <div id="estante" class="estante"></div>
+    </section>
+
+    <!-- ================= TUTOR ================= -->
+    <section class="tela" id="tela-tutor">
+      <div class="cartao tutor">
+        <div class="tutor-topo">
+          <div>
+            <h2>💬 Tutor — pergunte o que você não entendeu</h2>
+            <p class="sub" id="tutor-contexto">Pergunte qualquer coisa das suas matérias.</p>
+          </div>
+          <button class="btn secundario pequeno" id="tutor-limpar">Nova conversa</button>
+        </div>
+        <div id="chat" class="chat"></div>
+        <div id="tutor-miniaturas" class="miniaturas"></div>
+        <form id="form-tutor" class="chat-form">
+          <label class="btn secundario icone" title="Anexar foto de uma página ou exercício">📷
+            <input type="file" id="tutor-foto" accept="image/*" multiple hidden>
+          </label>
+          <input id="tutor-pergunta" placeholder="Ex.: Não entendi o que foi o tráfico negreiro…" autocomplete="off">
+          <button class="btn">Enviar</button>
+        </form>
+      </div>
+    </section>
+
+    <!-- ================= HISTÓRICO ================= -->
+    <section class="tela" id="tela-historico">
+      <h2 class="titulo-secao">⭐ Meu histórico</h2>
+      <p class="sub">Tudo que você já estudou fica guardado aqui, com a sua nota nos simulados.</p>
+      <div id="stats" class="stats"></div>
+      <div id="lista-historico" class="lista-historico"></div>
+    </section>
+
+    <!-- ================= CONFIG ================= -->
+    <section class="tela" id="tela-config">
+      <div class="cartao config">
+        <h2>⚙️ Configurações</h2>
+        <label>Nome do aluno
+          <input id="cfg-nome" placeholder="Enzo">
+        </label>
+        <label>Chave da API do Claude (Anthropic)
+          <input id="cfg-chave" type="password" placeholder="sk-ant-..." autocomplete="off">
+          <small>Necessária para gerar material de qualquer assunto e para o tutor. Fica salva só neste navegador.
+            Crie em <a href="https://console.anthropic.com/settings/keys" target="_blank" rel="noopener">console.anthropic.com</a>.</small>
+        </label>
+        <label>Modelo
+          <select id="cfg-modelo">
+            <option value="claude-opus-5-5">Claude Opus 5.5 (melhor qualidade)</option>
+            <option value="claude-sonnet-5-5">Claude Sonnet 5.5 (mais barato)</option>
+            <option value="claude-haiku-5-5">Claude Haiku 5.5 (bem mais barato)</option>
+          </select>
+        </label>
+        <div class="linha-botoes">
+          <button class="btn" id="cfg-salvar">Salvar</button>
+          <button class="btn secundario" id="cfg-testar">Testar chave</button>
+        </div>
+        <p id="cfg-status" class="sub"></p>
+        <hr>
+        <details>
+          <summary>Apagar dados deste aparelho</summary>
+          <p class="sub">Apaga histórico, chave e livros salvos neste navegador.</p>
+          <button class="btn perigo" id="cfg-apagar">Apagar tudo</button>
+        </details>
+      </div>
+    </section>
+  </main>
+
+  <!-- ================= LEITOR ================= -->
+  <div class="leitor" id="leitor" hidden>
+    <div class="leitor-barra">
+      <button class="btn secundario pequeno" id="leitor-fechar">✕ Fechar</button>
+      <strong id="leitor-titulo"></strong>
+      <div class="leitor-nav">
+        <button class="btn secundario pequeno" id="leitor-ant">◀</button>
+        <span><input id="leitor-pag" type="number" min="1" value="1"> / <span id="leitor-total">1</span></span>
+        <button class="btn secundario pequeno" id="leitor-prox">▶</button>
+        <button class="btn secundario pequeno" id="leitor-menos" title="Diminuir">－</button>
+        <button class="btn secundario pequeno" id="leitor-mais" title="Aumentar">＋</button>
+      </div>
+      <div class="leitor-acoes">
+        <button class="btn pequeno" id="leitor-usar">📌 Usar esta página no estudo</button>
+        <button class="btn pequeno laranja" id="leitor-explicar">💬 Explicar esta página</button>
+      </div>
+    </div>
+    <div class="leitor-pagina" id="leitor-pagina">
+      <canvas id="leitor-canvas"></canvas>
+    </div>
+  </div>
+
+  <!-- ================= MODAL LIVRO ================= -->
+  <dialog id="modal-livro" class="modal">
+    <form method="dialog" id="form-livro">
+      <h3 id="modal-livro-titulo">Livro</h3>
+      <div id="modal-livro-capa"></div>
+      <label id="campo-novo-materia" hidden>Matéria / título
+        <input id="novo-materia" placeholder="Ex.: Redação">
+      </label>
+      <label id="campo-novo-volume" hidden>Volume
+        <input id="novo-volume" type="number" min="1" max="4" value="1">
+      </label>
+      <p class="sub" id="modal-livro-status"></p>
+      <label class="btn secundario arquivo">📄 Escolher PDF ou fotos das páginas
+        <input type="file" id="livro-arquivo" accept="application/pdf,image/*" multiple hidden>
+      </label>
+      <label>Link da plataforma digital (opcional)
+        <input id="livro-link" type="url" placeholder="Cole aqui o link do livro digital da escola">
+      </label>
+      <div class="linha-botoes">
+        <button class="btn" value="ler" id="modal-ler">📖 Ler</button>
+        <button class="btn secundario" value="estudar" id="modal-estudar">🧠 Estudar esta matéria</button>
+        <button class="btn secundario" value="salvar">Salvar</button>
+        <button class="btn perigo pequeno" value="remover" id="modal-remover">Remover arquivo</button>
+        <button class="btn secundario" value="cancelar" formnovalidate>Fechar</button>
+      </div>
+    </form>
+  </dialog>
+
+  <div id="toast" class="toast" hidden></div>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
